@@ -1,0 +1,21 @@
+
+
+A single programming language and environment across all layers of the "stack":
+
+web                    web service              back-end service        database
+browser
+----------          ---------------          --------------------- -----------
+angular                 node                     node                    plv8
+
+
+this lowers the barrier to entry for swarming to different parts of the system
+
+
+Asynchronous development style: the non-blocking style of logic allows for easier scaling of
+logic, and a very low overhead for parallellism, and fewer delays caused by blocking dependancies.
+(i.e. a hung DNS lookup wont block logic that does not depend upon it)
+
+This also allows the complex dependencies and edge cases introduced by threading to be avoided.
+
+long lived daemons
+

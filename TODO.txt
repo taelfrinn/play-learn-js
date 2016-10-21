@@ -1,0 +1,17 @@
+
+=====
+
+fancy uses of call and apply
+
+arguments -- not an array
+	arrayness in general
+
+====
+Using/stealing member functions defined for other classes and using them elsewhere
+	Array.prototype.reverse.call(otherobj)
+
+=====
+
+Mutative functions ( arrays/obj)
+Functional Functions (string Buffer )
+

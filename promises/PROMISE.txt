@@ -1,0 +1,33 @@
+
+
+a promise is a return value from a function which may not have finished yet
+	IOW: it is a promise that a return value either has come or will come eventually
+
+
+The consumer of the return value might not exist yet either. 
+So we can call an asynchronous function, not even yet knowing who the consumer
+of its return value is!
+
+A promise also might return an error instead of a valid result.
+
+
+Basic API:
+
+var p = new Promise( function );
+
+the function will be immediately called with two parameters:
+	resolve, and reject
+	once the function finishes its work, it should use one of these two
+	functions to handle its return value
+
+promises have two important member functions
+	"then(function)" and "catch(function)"
+
+	"then" takes a function that should be called once the promise has a
+	successful return value. The return value of the "then" handler can
+	also return a new promise which replace the previous promise in order.
+	alternatively, it can return a simple value back to the original promise
+
+	"catch" takes a function that should be called once the promise has
+	an error result. may also return a new promise
+
