@@ -1,5 +1,6 @@
 
 
+// What will this program print
 
 function Color( name )
 {
@@ -9,13 +10,13 @@ function Color( name )
 
 Color.prototype.SayHi = function( towho )
 {
-	var self = this;
-
 	setTimeout( function(){	
-			console.log("Hello " + towho + ", I am " + self.name ) }, 0);
+			console.log("Hello " + towho + ", I am " + this.name ) }, 0);
 }
 
 
 var blue = new Color('blue');
+
+console.log(JSON.stringify(blue));
 
 blue.SayHi( "Lee" );

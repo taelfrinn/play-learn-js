@@ -7,6 +7,11 @@ function delayed_add(a, b)
 	return Promise.delay(500).then( _ => Number(a)+Number(b) );
 }
 
+function delayed_fail()
+{
+	return Promise.delay(500).then( _ => Promise.reject("fail on purpose") );
+}
+
 function* delayed_add_generator()
 {
 	let result = 0;
@@ -16,13 +21,21 @@ function* delayed_add_generator()
 		console.log(`delayedaddition ${x} + previous result = ${newresult}`);
 		result = newresult;
 	}
+	try
+	{
+		let x = yield delayed_fail();
+		
+		console.log("this should never happen!");
+
+	}catch(err)
+	{
+		console.log(err + ", just as desired");
+	}
 	return result;
 }
 
-// What if we drive a generator like a promise
-//   any yield will be resolved as a promise function
-//   any results passed back
-
+// Lets elaborate a bit, handle promise failures by converting them into "throws"
+// this continues the "async code that looks like not async" code thing
 function coroutine_ize(generator_function)
 {
 	return function()
@@ -31,7 +44,7 @@ function coroutine_ize(generator_function)
 		let g = generator_function.apply(this, arguments);
 
 		let p = new Promise(function(resolve, reject)
-		{	
+		{
 			function get_next_value(previous_result)
 			{
 				try
@@ -41,15 +54,39 @@ function coroutine_ize(generator_function)
 
 					if( yielded_result.done )
 						//couroutine has finished
-						resolve(yielded_result.value);
+						return resolve(yielded_result.value);
 					else
 						//couroutine still going, resolve whatever it gave us and when that has finished, recurse
 						Promise.resolve( yielded_result.value )
-						.then(get_next_value);
+						.then(get_next_value)
+						.catch(throw_next_value)
+						;
 				}
 				catch(err)
 				{
-					reject(err);
+					return reject(err);
+				}
+			}
+			function throw_next_value(previous_result)
+			{
+				try
+				{
+					//run the couroutine from where it last left off:
+					let yielded_result = g.throw(previous_result);
+
+					if( yielded_result.done )
+						//couroutine has finished
+						return resolve(yielded_result.value);
+					else
+						//couroutine still going, resolve whatever it gave us and when that has finished, recurse
+						Promise.resolve( yielded_result.value )
+						.then(get_next_value)
+						.catch(throw_next_value)
+						;
+				}
+				catch(err)
+				{
+					return reject(err);
 				}
 			}
 

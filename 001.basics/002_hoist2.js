@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+//What will this program do?
 
 var x = 5;
 function test2()
