@@ -1,3 +1,9 @@
+
+// generator is an interruptible function which can be continued where it left off
+// control can be passed back to it
+
+
+
 function* idMaker(){
   var index = 0;
   while(true)

@@ -6,6 +6,7 @@ var store = require('./redis_store.js');
 var obj1 = {id: 1, name : 'Phone' , color : 'red'};
 
 
+//Store the object, then re-retrieve it
 store.store_obj(obj1.id,obj1,handle_store1_cb);
 
 function handle_store1_cb(err,res)
@@ -17,6 +18,7 @@ function handle_store1_cb(err,res)
 	}else
 	{
 		console.log('object 1 stored okay!' + res);
+		//reretrive call buried down in here:
 		store.get_obj( 1, handle_get_obj1);
 	}
 }
